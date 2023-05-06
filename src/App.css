@@ -1,0 +1,10 @@
+body {
+  background: purple;
+}
+h1 {
+  color: red;
+}
+.container {
+  max-width: 700px;
+  background: black;
+}
