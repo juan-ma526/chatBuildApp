@@ -1,6 +1,5 @@
 import "./App.css";
 import axios from "axios";
-import { useEffect } from "react";
 import { useState } from "react";
 
 function App() {
@@ -18,12 +17,13 @@ function App() {
     sendMessage(valorInput);
     setValorInput("");
   }
+  /*Crear un archivo .env.local y usar su api key que le da la pagina de openIA, ahi hacer la importacion de la misma como en la linea 25*/
 
   const sendMessage = (message) => {
     const url = "https://api.openai.com/v1/chat/completions";
     const headers = {
       "Content-type": "application/json",
-      Authorization: `Bearer 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`,
+      Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
     };
     const data = {
       model: "gpt-3.5-turbo-0301",
@@ -50,10 +50,20 @@ function App() {
     <div className="container">
       <h1>CHATGPT</h1>
       {chatLog.map((message, index) => (
-        <div key={index}>{console.log(message) /* message.message */}</div>
+        <div
+          className={message.type === "user" ? "caja-user" : "caja-bot"}
+          key={index}
+        >
+          {message.message}
+        </div>
       ))}
+      {isLoading && (
+        <div key={chatLog.length} className="caja-loader">
+          <span className="loader"></span>
+        </div>
+      )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="formulario">
         <input
           type="text"
           placeholder="Ingrese el texto aqui"
